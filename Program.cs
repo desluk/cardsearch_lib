@@ -13,9 +13,9 @@ namespace console
             string test = Console.ReadLine();
             if (String.CompareOrdinal(test, "test") == 0) ;
             {
-                ConnectionClass connectionClass = new ConnectionClass("dark Magician","4");
+              //  ConnectionClass connectionClass = new ConnectionClass("dark Magician","4");
                 Console.WriteLine("Connection Class Created");
-                Console.WriteLine(connectionClass.ConnectToWebsiteWithJson());
+               // Console.WriteLine(connectionClass.ConnectToWebsiteWithJson());
                 Console.ReadLine();
 
             }

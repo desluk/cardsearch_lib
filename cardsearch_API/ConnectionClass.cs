@@ -1,14 +1,13 @@
-
-
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using Microsoft.VisualBasic.CompilerServices;
+using System.Text;
 
 namespace cardsearch_API
 {
-
     public class ConnectionClass
     {
+        #region Private Consts Variables
+
         private string website = "https://db.ygoprodeck.com/api/v7/cardinfo.php";
         private string questionMark = "?";
         private string fuzzySearch = "fname";
@@ -19,18 +18,43 @@ namespace cardsearch_API
         private string equals = "=";
         private string level = "level";
         private string format = "format";
-        
-        
+        private string cardSet = "cardset";
 
-        static HttpClient client = new HttpClient();
+        #endregion
 
-        private searchTerm[] toSearch;
-        private string[] searchTerms;
+        #region Private Variables
 
-        public ConnectionClass(string searchCVS, string termCVS)
+        private static HttpClient client = new HttpClient();
+        private string searchName;
+        private searchTerm searchTerms;
+        private string sortSearchName;
+        private bool hasSortTerm;
+        #endregion
+
+        #region Constructors
+
+        public ConnectionClass(string searchName, searchTerm term)
         {
-            DetermineSearchTypes(searchCVS,termCVS);
+            hasSortTerm = false;
+            this.searchTerms = term;
+            this.searchName = searchName;
         }
+        
+        public ConnectionClass(string searchName, searchTerm termToSearchBy, string sortSearchName,
+            bool sort = false)
+        {
+            this.searchName = searchName;
+            this.searchTerms = termToSearchBy;
+            hasSortTerm = sort;
+            if (hasSortTerm)
+            {
+                this.sortSearchName = sortSearchName;
+            }
+
+        }
+        #endregion
+
+        #region Public Methods
 
         public string ConnectToWebsiteWithJson()
         {
@@ -43,59 +67,43 @@ namespace cardsearch_API
             if (responseMessage.IsSuccessStatusCode)
             {
                 Task<CardFromJson> data = responseMessage.Content.ReadFromJsonAsync<CardFromJson>()!;
-               
+
             }
             else
             {
                 final = String.Format("Failed: {0}, ({1})", (int)responseMessage.StatusCode,
                     responseMessage.ReasonPhrase);
+
+            }
+
+            return final;
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        private string GetUrlParameters()
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.Append(questionMark);
+
+            switch (searchTerms)
+            {
+                case searchTerm.attributeSearch:
+                    stringBuilder.Append(attribute);
+                    break;
+                case searchTerm.cardsetSearch:
+                    stringBuilder.Append(card)
+            }
+            if (hasSortTerm)
+            {
                 
             }
             return final;
         }
 
-        private string GetUrlParameters()
-        {
-            string final = questionMark;
-            return final + fuzzySearch + equals + "Dark Magician";
-        }
+        #endregion
 
-        private void DetermineSearchTypes(string searchCvs, string termCvs)
-        {
-            searchTerms = searchCvs.Split(',');
-            string[] search = termCvs.Split(',');
-            toSearch = new searchTerm[search.Length ];
-            for(int index =0; index < search.Length-1;index++)
-            {
-                int searchNum = Int32.Parse(search[index]);
-                switch (searchNum)
-                {
-                    case 1: // Attribute
-                        toSearch[index] = searchTerm.attributeSearch;
-                        break;
-                    case 2: // cardSet
-                        toSearch[index] = searchTerm.cardsetSearch;
-                        break;
-                    case 3: // formatSearch
-                        toSearch[index] = searchTerm.formatSearch;
-                        break;
-                    case 4: // fuzzy search
-                        toSearch[index] = searchTerm.fuzzySearch;
-                        break;
-                    case 5: // name search
-                        toSearch[index] = searchTerm.nameSearch;
-                        break;
-                    case 6: // Stable Search
-                        toSearch[index] = searchTerm.stableSearch;
-                        break;
-                    case 7: //type search
-                        toSearch[index] = searchTerm.typeSearch;
-                        break;
-                    default:
-                        toSearch[index] = searchTerm.fuzzySearch;
-                        break;        
-                }
-            }
-        }
     }
 }
