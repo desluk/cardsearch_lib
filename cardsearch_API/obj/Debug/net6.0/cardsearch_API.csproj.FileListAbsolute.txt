@@ -1,0 +1,12 @@
+/home/luke/Documents/SSDGames2/Coding/cardsearch_lib/cardsearch_API/bin/Debug/net6.0/cardsearch_API.deps.json
+/home/luke/Documents/SSDGames2/Coding/cardsearch_lib/cardsearch_API/bin/Debug/net6.0/cardsearch_API.dll
+/home/luke/Documents/SSDGames2/Coding/cardsearch_lib/cardsearch_API/bin/Debug/net6.0/cardsearch_API.pdb
+/home/luke/Documents/SSDGames2/Coding/cardsearch_lib/cardsearch_API/obj/Debug/net6.0/cardsearch_API.csproj.AssemblyReference.cache
+/home/luke/Documents/SSDGames2/Coding/cardsearch_lib/cardsearch_API/obj/Debug/net6.0/cardsearch_API.GeneratedMSBuildEditorConfig.editorconfig
+/home/luke/Documents/SSDGames2/Coding/cardsearch_lib/cardsearch_API/obj/Debug/net6.0/cardsearch_API.AssemblyInfoInputs.cache
+/home/luke/Documents/SSDGames2/Coding/cardsearch_lib/cardsearch_API/obj/Debug/net6.0/cardsearch_API.AssemblyInfo.cs
+/home/luke/Documents/SSDGames2/Coding/cardsearch_lib/cardsearch_API/obj/Debug/net6.0/cardsearch_API.csproj.CoreCompileInputs.cache
+/home/luke/Documents/SSDGames2/Coding/cardsearch_lib/cardsearch_API/obj/Debug/net6.0/cardsearch_API.dll
+/home/luke/Documents/SSDGames2/Coding/cardsearch_lib/cardsearch_API/obj/Debug/net6.0/refint/cardsearch_API.dll
+/home/luke/Documents/SSDGames2/Coding/cardsearch_lib/cardsearch_API/obj/Debug/net6.0/cardsearch_API.pdb
+/home/luke/Documents/SSDGames2/Coding/cardsearch_lib/cardsearch_API/obj/Debug/net6.0/ref/cardsearch_API.dll
