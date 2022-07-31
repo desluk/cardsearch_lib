@@ -32,8 +32,19 @@ namespace cardsearch_API
         private string sortSearchName;
         private bool hasSortTerm;
         private ConverterForEnums ConverterForEnums = new ConverterForEnums();
+        private List<Card> cards = new List<Card>();
         #endregion
 
+
+        #region Public Variables
+
+        public List<Card> GetCardsFound
+        {
+            get => cards;
+        }   
+        
+        #endregion
+        
         #region Constructors
 
         public ConnectionClass(string searchName, searchTerm term)
@@ -61,7 +72,7 @@ namespace cardsearch_API
 
         public string ConnectToWebsiteWithJson()
         {
-            string final = "";
+            string resultOfConnection = "";
             client.BaseAddress = new Uri(website);
             client.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));
@@ -70,17 +81,18 @@ namespace cardsearch_API
             if (responseMessage.IsSuccessStatusCode)
             {
                 Task<CardFromJson> data = responseMessage.Content.ReadFromJsonAsync<CardFromJson>()!;
-                final = string.Format("Success: Number of cards found: {0}", data.Result.data.Count);
-                
+                resultOfConnection = string.Format("Success: Number of cards found: {0}", data.Result.data.Count);
+                cards = data.Result.data;
+
             }
             else
             {
-                final = String.Format("Failed: {0}, ({1})", (int)responseMessage.StatusCode,
+                resultOfConnection = String.Format("Failed: {0}, ({1})", (int)responseMessage.StatusCode,
                     responseMessage.ReasonPhrase);
             }
 
             client.CancelPendingRequests();
-            return final;
+            return resultOfConnection;
         }
 
         public string GetUrlParameters => CreateUrlParameters();

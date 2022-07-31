@@ -7,7 +7,6 @@ namespace console
 {
     class Program
     {
-        
         static void Main(string[] args)
         {
          ConverterForEnums converterForEnums = new ConverterForEnums();
@@ -17,8 +16,6 @@ namespace console
             {
                 while (true)
                 {
-
-
                     Console.WriteLine("Type in the search term your want");
                     string searchTerm = Console.ReadLine();
                     if (searchTerm == null || searchTerm == " " || searchTerm == "")
