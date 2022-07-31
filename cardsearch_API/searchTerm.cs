@@ -8,5 +8,6 @@ public enum searchTerm
     attributeSearch,
     cardsetSearch,
     formatSearch,
-    stableSearch
+    stableSearch,
+    arhcetypeSearch
 }

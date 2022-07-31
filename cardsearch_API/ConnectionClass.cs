@@ -11,6 +11,7 @@ namespace cardsearch_API
         private string website = "https://db.ygoprodeck.com/api/v7/cardinfo.php";
         private string questionMark = "?";
         private string fuzzySearch = "fname";
+        private string directNameSearch = "name";
         private string archetype = "archetype";
         private string sort = "sort";
         private string andSign = "&";
@@ -19,6 +20,7 @@ namespace cardsearch_API
         private string level = "level";
         private string format = "format";
         private string cardSet = "cardset";
+        private string typesearch = "type";
 
         #endregion
 
@@ -29,6 +31,7 @@ namespace cardsearch_API
         private searchTerm searchTerms;
         private string sortSearchName;
         private bool hasSortTerm;
+        private ConverterForEnums ConverterForEnums = new ConverterForEnums();
         #endregion
 
         #region Constructors
@@ -63,44 +66,45 @@ namespace cardsearch_API
             client.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));
 
-            HttpResponseMessage responseMessage = client.GetAsync(GetUrlParameters()).Result;
+            HttpResponseMessage responseMessage = client.GetAsync(CreateUrlParameters()).Result;
             if (responseMessage.IsSuccessStatusCode)
             {
                 Task<CardFromJson> data = responseMessage.Content.ReadFromJsonAsync<CardFromJson>()!;
-
+                final = string.Format("Success: Number of cards found: {0}", data.Result.data.Count);
+                
             }
             else
             {
                 final = String.Format("Failed: {0}, ({1})", (int)responseMessage.StatusCode,
                     responseMessage.ReasonPhrase);
-
             }
 
+            client.CancelPendingRequests();
             return final;
         }
 
+        public string GetUrlParameters => CreateUrlParameters();
         #endregion
 
         #region Private Methods
 
-        private string GetUrlParameters()
+        private string CreateUrlParameters()
         {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.Append(questionMark);
 
-            switch (searchTerms)
-            {
-                case searchTerm.attributeSearch:
-                    stringBuilder.Append(attribute);
-                    break;
-                case searchTerm.cardsetSearch:
-                    stringBuilder.Append(card)
-            }
+            stringBuilder.Append(ConverterForEnums.ConvertingSearchTermToString(searchTerms));
+
+            stringBuilder.Append(equals);
+            stringBuilder.Append(searchName.Replace(" ","%20"));
+            
             if (hasSortTerm)
             {
-                
+                stringBuilder.Append(andSign);
+                stringBuilder.Append(equals);
+                stringBuilder.Append(sortSearchName);
             }
-            return final;
+            return stringBuilder.ToString();
         }
 
         #endregion
