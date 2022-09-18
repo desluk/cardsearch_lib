@@ -36,6 +36,11 @@ class Program
                     converterForEnums.ConvertStringToSearchTerm(searchTerm));
                 Console.WriteLine("Connection Class Created");
                 Console.WriteLine(connectionClass.ConnectToWebsiteWithJson());
+                foreach (string s in connectionClass.GetNameOfCardsFound)
+                {
+                    Console.WriteLine(s);
+                }
+                Console.WriteLine();
             }
         }
     }

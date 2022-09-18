@@ -8,8 +8,8 @@ namespace cardsearch_API
     {
         #region Private Consts Variables
 
-        private string website = "https://db.ygoprodeck.com/api/v7/cardinfo.php";
-        private string questionMark = "?";
+        private const string website = "https://db.ygoprodeck.com/api/v7/cardinfo.php";
+        private const string questionMark = "?";
         private string fuzzySearch = "fname";
         private string directNameSearch = "name";
         private string archetype = "archetype";
@@ -32,14 +32,14 @@ namespace cardsearch_API
         private bool hasSortTerm;
         private ConverterForEnums ConverterForEnums = new ConverterForEnums();
         private List<Card> cards = new List<Card>();
+        private List<string> cardNames = new List<string>();
         #endregion
 
 
         #region Public Variables
-        public List<Card> GetCardsFound
-        {
-            get => cards;
-        }
+
+        public List<Card> GetCardsFound => cards;
+        public List<string> GetNameOfCardsFound => cardNames;
         #endregion
         
         #region Constructors
@@ -80,7 +80,10 @@ namespace cardsearch_API
                 Task<CardFromJson> data = responseMessage.Content.ReadFromJsonAsync<CardFromJson>()!;
                 resultOfConnection = string.Format("Success: Number of cards found: {0}", data.Result.data.Count);
                 cards = data.Result.data;
-
+                foreach (Card card in cards)
+                {
+                    cardNames.Add(card.name);
+                }
             }
             else
             {
