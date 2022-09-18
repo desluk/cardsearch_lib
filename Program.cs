@@ -3,43 +3,39 @@
 
 using cardsearch_API;
 
-namespace console
+namespace cardsearch_Lib;
+
+class Program
 {
-    class Program
+    static void Main(string[] args)
     {
-        static void Main(string[] args)
+        ConverterForEnums converterForEnums = new ConverterForEnums();
+        Console.WriteLine("The Test");
+        string? test = Console.ReadLine();
+        if (String.CompareOrdinal(test, "test") == 0) 
         {
-         ConverterForEnums converterForEnums = new ConverterForEnums();
-            Console.WriteLine("The Test");
-            string test = Console.ReadLine();
-            if (String.CompareOrdinal(test, "test") == 0) ;
+            while (true)
             {
-                while (true)
+                Console.WriteLine("Type in the search term your want");
+                string? searchTerm = Console.ReadLine();
+                if (searchTerm is null or " " or "")
                 {
-                    Console.WriteLine("Type in the search term your want");
-                    string searchTerm = Console.ReadLine();
-                    if (searchTerm == null || searchTerm == " " || searchTerm == "")
-                    {
-                        Console.WriteLine("You are using fuzzy search");
-                        searchTerm = "fname";
-                    }
-
-
-                    Console.WriteLine("Type in the card name/search name you are wanting");
-                    string searchName = Console.ReadLine();
-                    if (searchName == null || searchName == " " || searchName == "")
-                    {
-                        Console.WriteLine("You are searching Dark Magician");
-                        searchName = "Dark Magician";
-                    }
-
-                    ConnectionClass connectionClass = new ConnectionClass(searchName,
-                        converterForEnums.ConvertStringToSearchTerm(searchTerm));
-                    Console.WriteLine("Connection Class Created");
-                    Console.WriteLine(connectionClass.ConnectToWebsiteWithJson());
-                    
-                    
+                    Console.WriteLine("You are using fuzzy search");
+                    searchTerm = "fname";
                 }
+                    
+                Console.WriteLine("Type in the card name/search name you are wanting");
+                string? searchName = Console.ReadLine();
+                if (searchName == null || searchName == " " || searchName == "")
+                {
+                    Console.WriteLine("You are searching Dark Magician");
+                    searchName = "Dark Magician";
+                }
+
+                ConnectionClass connectionClass = new ConnectionClass(searchName,
+                    converterForEnums.ConvertStringToSearchTerm(searchTerm));
+                Console.WriteLine("Connection Class Created");
+                Console.WriteLine(connectionClass.ConnectToWebsiteWithJson());
             }
         }
     }

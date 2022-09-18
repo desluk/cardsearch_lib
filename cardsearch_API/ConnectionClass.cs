@@ -25,11 +25,10 @@ namespace cardsearch_API
         #endregion
 
         #region Private Variables
-
         private static HttpClient client = new HttpClient();
         private string searchName;
         private searchTerm searchTerms;
-        private string sortSearchName;
+        private string sortSearchName = null!;
         private bool hasSortTerm;
         private ConverterForEnums ConverterForEnums = new ConverterForEnums();
         private List<Card> cards = new List<Card>();
@@ -37,12 +36,10 @@ namespace cardsearch_API
 
 
         #region Public Variables
-
         public List<Card> GetCardsFound
         {
             get => cards;
-        }   
-        
+        }
         #endregion
         
         #region Constructors
