@@ -1,7 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 
-using cardsearch_API;
+using CardSearchApi;
 
 namespace cardsearch_Lib;
 

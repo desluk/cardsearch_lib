@@ -1,4 +1,4 @@
-namespace cardsearch_API;
+namespace CardSearchApi;
 
 public enum CardAttributes
 {

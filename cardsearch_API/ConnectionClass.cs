@@ -2,37 +2,37 @@ using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text;
 
-namespace cardsearch_API
+namespace CardSearchApi
 {
     public class ConnectionClass
     {
         #region Private Consts Variables
 
-        private const string website = "https://db.ygoprodeck.com/api/v7/cardinfo.php";
-        private const string questionMark = "?";
-        private string fuzzySearch = "fname";
-        private string directNameSearch = "name";
-        private string archetype = "archetype";
-        private string sort = "sort";
-        private string andSign = "&";
-        private string attribute = "attribute";
-        private string equals = "=";
-        private string level = "level";
-        private string format = "format";
-        private string cardSet = "cardset";
-        private string typesearch = "type";
+        private const string Website = "https://db.ygoprodeck.com/api/v7/cardinfo.php";
+        private const string QuestionMark = "?";
+        private const string FuzzySearch = "fname";
+        private const string DirectNameSearch = "name";
+        private const string Archetype = "archetype";
+        private const string Sort = "sort";
+        private const string AndSign = "&";
+        private const string Attribute = "attribute";
+        private const string EqualSign = "=";
+        private const string Level = "level";
+        private const string Format = "format";
+        private const string CardSet = "cardset";
+        private const string TypeSearch = "type";
 
         #endregion
 
         #region Private Variables
-        private static HttpClient client = new HttpClient();
+        private static readonly HttpClient Client = new HttpClient();
         private string searchName;
         private searchTerm searchTerms;
         private string sortSearchName = null!;
         private bool hasSortTerm;
-        private ConverterForEnums ConverterForEnums = new ConverterForEnums();
+        private readonly ConverterForEnums converterForEnums = new ConverterForEnums();
         private List<Card> cards = new List<Card>();
-        private List<string> cardNames = new List<string>();
+        private readonly List<string> cardNames = new List<string>();
         #endregion
 
 
@@ -40,6 +40,7 @@ namespace cardsearch_API
 
         public List<Card> GetCardsFound => cards;
         public List<string> GetNameOfCardsFound => cardNames;
+        public string GetUrlParameters => CreateUrlParameters();
         #endregion
         
         #region Constructors
@@ -51,17 +52,16 @@ namespace cardsearch_API
             this.searchName = searchName;
         }
         
-        public ConnectionClass(string searchName, searchTerm termToSearchBy, string sortSearchName,
+        public ConnectionClass(string cardNameToSearch, searchTerm termToSearchCardBy, string sortSearchName,
             bool sort = false)
         {
-            this.searchName = searchName;
-            this.searchTerms = termToSearchBy;
+            searchName = cardNameToSearch;
+            searchTerms = termToSearchCardBy;
             hasSortTerm = sort;
             if (hasSortTerm)
             {
                 this.sortSearchName = sortSearchName;
             }
-
         }
         #endregion
 
@@ -70,20 +70,14 @@ namespace cardsearch_API
         public string ConnectToWebsiteWithJson()
         {
             string resultOfConnection = "";
-            client.BaseAddress = new Uri(website);
-            client.DefaultRequestHeaders.Accept.Add(
+            Client.BaseAddress = new Uri(Website);
+            Client.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));
 
-            HttpResponseMessage responseMessage = client.GetAsync(CreateUrlParameters()).Result;
+            HttpResponseMessage responseMessage = Client.GetAsync(CreateUrlParameters()).Result;
             if (responseMessage.IsSuccessStatusCode)
             {
-                Task<CardFromJson> data = responseMessage.Content.ReadFromJsonAsync<CardFromJson>()!;
-                resultOfConnection = string.Format("Success: Number of cards found: {0}", data.Result.data.Count);
-                cards = data.Result.data;
-                foreach (Card card in cards)
-                {
-                    cardNames.Add(card.name);
-                }
+                resultOfConnection = ResultOfConnection(responseMessage);
             }
             else
             {
@@ -91,29 +85,41 @@ namespace cardsearch_API
                     responseMessage.ReasonPhrase);
             }
 
-            client.CancelPendingRequests();
+            Client.CancelPendingRequests();
             return resultOfConnection;
         }
 
-        public string GetUrlParameters => CreateUrlParameters();
         #endregion
 
         #region Private Methods
+        
+        private string ResultOfConnection(HttpResponseMessage responseMessage)
+        {
+            Task<CardFromJson> data = responseMessage.Content.ReadFromJsonAsync<CardFromJson>()!;
+            string resultOfConnection = $"Success: Number of cards found: {data.Result.data.Count}";
+            cards = data.Result.data;
+            
+            foreach (Card card in cards)
+                cardNames.Add(card.name);
+            
+            return resultOfConnection;
+        }
+
 
         private string CreateUrlParameters()
         {
             StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.Append(questionMark);
+            stringBuilder.Append(QuestionMark);
 
-            stringBuilder.Append(ConverterForEnums.ConvertingSearchTermToString(searchTerms));
+            stringBuilder.Append(converterForEnums.ConvertingSearchTermToString(searchTerms));
 
-            stringBuilder.Append(equals);
+            stringBuilder.Append(EqualSign);
             stringBuilder.Append(searchName.Replace(" ","%20"));
             
             if (hasSortTerm)
             {
-                stringBuilder.Append(andSign);
-                stringBuilder.Append(equals);
+                stringBuilder.Append(AndSign);
+                stringBuilder.Append(EqualSign);
                 stringBuilder.Append(sortSearchName);
             }
             return stringBuilder.ToString();

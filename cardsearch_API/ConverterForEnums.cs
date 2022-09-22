@@ -1,5 +1,5 @@
 
-namespace cardsearch_API
+namespace CardSearchApi
 {
     public class ConverterForEnums
     {
