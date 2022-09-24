@@ -8,9 +8,8 @@ static class Program
     {
         ConverterForEnums converterForEnums = new ConverterForEnums();
         Console.WriteLine("This is a termanel version of the Yu-gi-Oh card search");
-        string? test = Console.ReadLine();
-
-        while (true)
+        bool continueSearching = true;
+        do
         {
             Console.WriteLine("Type in the search term your want");
             Console.WriteLine(
@@ -30,7 +29,7 @@ static class Program
 
             ConnectionClass connectionClass = new ConnectionClass(searchName, searchTerm);
             Console.WriteLine("Connection Class Created");
-            
+
             Console.WriteLine(connectionClass.ConnectToWebsiteWithJson());
             foreach (Card card in connectionClass.GetCardsFound)
             {
@@ -38,14 +37,23 @@ static class Program
                 Console.WriteLine("Name: " + card.name);
                 Console.WriteLine();
                 Console.WriteLine("Description: " + card.desc);
+                Console.WriteLine();
+                Console.WriteLine("Attack: " + card.atk + " Defence: " + card.def);
 
             }
 
             Console.WriteLine("<================================================================>");
             Console.WriteLine();
-            Console.WriteLine("Please press enter to look for another card");
-            Console.ReadLine();
-        }
+            Console.WriteLine("Please press enter to look for another card or press q/quit to exit");
+            string? quit = Console.ReadLine();
+            if (quit != null)
+            {
+                if (quit.ToLower() == "q" || quit.ToLower() == "quit" || quit.ToLower() == "q/quit")
+                    continueSearching = false;
+            }
+        } while (continueSearching);
+        Console.WriteLine("Thank you");
+        Console.ReadLine();
     }
 
     private static void WriteSearchEnumsToTheScreen()
