@@ -25,7 +25,7 @@ namespace CardSearchApi
         #endregion
 
         #region Private Variables
-        private static readonly HttpClient Client = new HttpClient();
+        private static HttpClient s_client = new HttpClient();
         private string searchName;
         private searchTerm searchTerms;
         private string sortSearchName = null!;
@@ -50,6 +50,7 @@ namespace CardSearchApi
             hasSortTerm = false;
             this.searchTerms = term;
             this.searchName = searchName;
+            s_client = new HttpClient();
         }
         
         public ConnectionClass(string cardNameToSearch, searchTerm termToSearchCardBy, string sortSearchName,
@@ -62,6 +63,7 @@ namespace CardSearchApi
             {
                 this.sortSearchName = sortSearchName;
             }
+            s_client = new HttpClient();
         }
         #endregion
 
@@ -70,22 +72,23 @@ namespace CardSearchApi
         public string ConnectToWebsiteWithJson()
         {
             string resultOfConnection = "";
-            Client.BaseAddress = new Uri(Website);
-            Client.DefaultRequestHeaders.Accept.Add(
+            s_client.BaseAddress = new Uri(Website);
+            s_client.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));
 
-            HttpResponseMessage responseMessage = Client.GetAsync(CreateUrlParameters()).Result;
+            HttpResponseMessage responseMessage = s_client.GetAsync(CreateUrlParameters()).Result;
             if (responseMessage.IsSuccessStatusCode)
             {
                 resultOfConnection = ResultOfConnection(responseMessage);
+                s_client.CancelPendingRequests();
             }
             else
             {
                 resultOfConnection = String.Format("Failed: {0}, ({1})", (int)responseMessage.StatusCode,
                     responseMessage.ReasonPhrase);
+                s_client.CancelPendingRequests();
             }
 
-            Client.CancelPendingRequests();
             return resultOfConnection;
         }
 

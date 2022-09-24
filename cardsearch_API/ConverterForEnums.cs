@@ -5,7 +5,7 @@ namespace CardSearchApi
     {
         #region Enums for Search Terms
 
-        public searchTerm ConvertStringToSearchTerm(string search)
+        public searchTerm ConvertStringToSearchTerm(string? search)
         {
             searchTerm searchTerm;
 
@@ -22,6 +22,7 @@ namespace CardSearchApi
                 case "cardname":
                 case "card name":
                 case "card":
+                case "name":
                     searchTerm = searchTerm.nameSearch;
                     break;
                 case "type search":
@@ -52,14 +53,15 @@ namespace CardSearchApi
                     searchTerm = searchTerm.stableSearch;
                     break;
                 case "archetype":
-                    case "archetype search":
-                        case "arche type search":
+                case "archetype search":
+                case "arche type search":
                     searchTerm = searchTerm.arhcetypeSearch;
                     break;
                 default:
                     searchTerm = searchTerm.fuzzySearch;
                     break;
             }
+
             return searchTerm;
         }
 
