@@ -1,9 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
-
 using CardSearchApi;
-
-namespace cardsearch_Lib;
 
 class Program
 {
