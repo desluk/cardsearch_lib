@@ -8,6 +8,7 @@ static class Program
     {
         ConverterForEnums converterForEnums = new ConverterForEnums();
         Console.WriteLine("This is a termanel version of the Yu-gi-Oh card search");
+        double timeTakenToRun = 0.0;
         bool continueSearching = true;
         do
         {
@@ -30,21 +31,47 @@ static class Program
             ConnectionClass connectionClass = new ConnectionClass(searchName, searchTerm);
             Console.WriteLine("Connection Class Created");
 
-            Console.WriteLine(connectionClass.ConnectToWebsiteWithJson());
-            foreach (Card card in connectionClass.GetCardsFound)
+            
+            connectionClass.ConnectToWebsiteWithJson();
+            Console.WriteLine("If you want to get the card details. Please enter y/yes");
+            string? cont = Console.ReadLine();
+            if (cont != null)
             {
-                Console.WriteLine("<================================================================>");
-                Console.WriteLine("Name: " + card.name);
-                Console.WriteLine();
-                Console.WriteLine("Description: " + card.desc);
-                Console.WriteLine();
-                Console.WriteLine("Attack: " + card.atk + " Defence: " + card.def);
-
+                if (cont.ToLower() == "y" || cont.ToLower() == "yes" || cont.ToLower() == "y/yes")
+                {
+                    foreach (Card card in connectionClass.GetCardsFound)
+                    {
+                        Console.WriteLine("<================================================================>");
+                        Console.WriteLine("Name: " + card.name);
+                        Console.WriteLine();
+                        Console.WriteLine("Description: " + card.desc);
+                        Console.WriteLine();
+                        Console.WriteLine("Attack: " + card.atk + " Defence: " + card.def);
+                    }
+                }
+                else
+                {
+                    foreach (Card card in connectionClass.GetCardsFound)
+                    {
+                        Console.WriteLine("<================================================================>");
+                        Console.WriteLine("Name: " + card.name);
+                    }
+                }
+            }
+            else
+            {
+                foreach (Card card in connectionClass.GetCardsFound)
+                {
+                    Console.WriteLine("<================================================================>");
+                    Console.WriteLine("Name: " + card.name);
+                }
             }
 
             Console.WriteLine("<================================================================>");
+            Console.WriteLine("Number of items found with your search: " + connectionClass.GetCardsFound.Count);
             Console.WriteLine();
             Console.WriteLine("Please press enter to look for another card or press q/quit to exit");
+            
             string? quit = Console.ReadLine();
             if (quit != null)
             {
