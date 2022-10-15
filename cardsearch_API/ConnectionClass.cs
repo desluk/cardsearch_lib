@@ -112,13 +112,31 @@ namespace CardSearchApi
             return cardViewer;
         }
 
-        public bool GetCardImages(List<Card> cardsImagesToGet)
+        public async Task<List<CardImageViewer>> GetCardImages (List<Card> cardsImagesToGet)
         {
-            bool cardImageGotten = false;
-
-            
-            
-            return cardImageGotten;
+            List<CardImageViewer> cardViewers = new List<CardImageViewer>();
+            foreach (Card card in cardsImagesToGet)
+            {
+                cardViewers.Add(new CardImageViewer(card.card_images));
+            }
+            HttpClient imageClient = new HttpClient();
+            try
+            {
+                foreach (CardImageViewer cardImageViewer in cardViewers)
+                {
+                    foreach (CardImage cardImage in cardImageViewer.CurrentCardImage)
+                    {
+                        cardImageViewer.SetSmallImage(await imageClient.GetByteArrayAsync(cardImage.image_url_small));
+                        cardImageViewer.SetLargeImage(await imageClient.GetByteArrayAsync(cardImage.image_url));
+                    }    
+                }
+                
+            }
+            catch (Exception e)
+            {
+                // ignored
+            }
+            return cardViewers;
         }
 
         #endregion
