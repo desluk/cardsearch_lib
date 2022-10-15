@@ -1,3 +1,4 @@
+using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text;
@@ -34,7 +35,6 @@ namespace CardSearchApi
         private List<Card> cards = new List<Card>();
         private readonly List<string> cardNames = new List<string>();
         #endregion
-
 
         #region Public Variables
 
@@ -90,6 +90,27 @@ namespace CardSearchApi
             }
 
             return resultOfConnection;
+        }
+
+        public async Task<bool> GetCardImages(Card cardImageToGet)
+        {
+            bool cardImageGotten = false;
+
+            HttpClient imageClient = new HttpClient();
+            var image = await imageClient.GetByteArrayAsync(cardImageToGet.card_images[0].image_url_small);
+
+            if (image.Length>0)
+                cardImageGotten = true;
+            return cardImageGotten;
+        }
+
+        public bool GetCardImages(List<Card> cardsImagesToGet)
+        {
+            bool cardImageGotten = false;
+
+            
+            
+            return cardImageGotten;
         }
 
         #endregion
