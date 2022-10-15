@@ -66,7 +66,13 @@ static class Program
                     Console.WriteLine("Name: " + card.name);
                 }
             }
-
+            Console.WriteLine("Get first cards image");
+            Console.ReadLine();
+            Task<CardImageViewer> test = connectionClass.GetCardImages(connectionClass.GetCardsFound[0]);
+            CardImageViewer cardImageViewer = test.Result;
+            Console.WriteLine("Number of items found for large Images: "+cardImageViewer.LargeImage.Count);
+            Console.WriteLine("Number of items found for Small Images: "+cardImageViewer.SmallImage.Count);
+            Console.ReadLine();
             Console.WriteLine("<================================================================>");
             Console.WriteLine("Number of items found with your search: " + connectionClass.GetCardsFound.Count);
             Console.WriteLine();

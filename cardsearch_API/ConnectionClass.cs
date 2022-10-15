@@ -92,16 +92,24 @@ namespace CardSearchApi
             return resultOfConnection;
         }
 
-        public async Task<bool> GetCardImages(Card cardImageToGet)
+        public async Task<CardImageViewer> GetCardImages(Card cardImageToGet)
         {
-            bool cardImageGotten = false;
+            CardImageViewer cardViewer = new CardImageViewer(cardImageToGet.card_images);
 
             HttpClient imageClient = new HttpClient();
-            var image = await imageClient.GetByteArrayAsync(cardImageToGet.card_images[0].image_url_small);
-
-            if (image.Length>0)
-                cardImageGotten = true;
-            return cardImageGotten;
+            try
+            {
+                foreach (CardImage cardImage in cardViewer.CurrentCardImage)
+                {
+                    cardViewer.SetSmallImage(await imageClient.GetByteArrayAsync(cardImage.image_url_small));
+                    cardViewer.SetLargeImage(await imageClient.GetByteArrayAsync(cardImage.image_url));
+                }
+            }
+            catch (Exception e)
+            {
+                // ignored
+            }
+            return cardViewer;
         }
 
         public bool GetCardImages(List<Card> cardsImagesToGet)
