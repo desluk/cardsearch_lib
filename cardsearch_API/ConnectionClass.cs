@@ -25,11 +25,12 @@ namespace CardSearchApi
         #endregion
 
         #region Private Variables
-        private static HttpClient s_client = new HttpClient();
-        private string searchName;
-        private searchTerm searchTerms;
+        private static HttpClient httpClient = new HttpClient();
+        private static HttpClient imageClient = new HttpClient();
+        private string searchName = null;
         private string sortSearchName = null!;
-        private bool hasSortTerm;
+        private bool hasSortTerm = false;
+        private searchTerm searchTerms = searchTerm.fuzzySearch;
         private List<Card> cards = new List<Card>();
         private readonly List<string> cardNames = new List<string>();
         #endregion
@@ -44,9 +45,9 @@ namespace CardSearchApi
         public ConnectionClass(string searchName, searchTerm term)
         {
             hasSortTerm = false;
-            this.searchTerms = term;
+            searchTerms = term;
             this.searchName = searchName;
-            s_client = new HttpClient();
+            httpClient = new HttpClient();
         }
         
         public ConnectionClass(string cardNameToSearch, searchTerm termToSearchCardBy, string sortSearchName,
@@ -59,7 +60,7 @@ namespace CardSearchApi
             {
                 this.sortSearchName = sortSearchName;
             }
-            s_client = new HttpClient();
+            httpClient = new HttpClient();
         }
         #endregion
 
@@ -67,21 +68,21 @@ namespace CardSearchApi
         public string ConnectToWebsiteWithJson()
         {
             string resultOfConnection = "";
-            s_client.BaseAddress = new Uri(Website);
-            s_client.DefaultRequestHeaders.Accept.Add(
+            httpClient.BaseAddress = new Uri(Website);
+            httpClient.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));
 
-            HttpResponseMessage responseMessage = s_client.GetAsync(CreateUrlParameters()).Result;
+            HttpResponseMessage responseMessage = httpClient.GetAsync(CreateUrlParameters()).Result;
             if (responseMessage.IsSuccessStatusCode)
             {
                 resultOfConnection = ResultOfConnection(responseMessage);
-                s_client.CancelPendingRequests();
+                httpClient.CancelPendingRequests();
             }
             else
             {
                 resultOfConnection = String.Format("Failed: {0}, ({1})", (int)responseMessage.StatusCode,
                     responseMessage.ReasonPhrase);
-                s_client.CancelPendingRequests();
+                httpClient.CancelPendingRequests();
             }
 
             return resultOfConnection;
@@ -91,7 +92,7 @@ namespace CardSearchApi
         {
             CardImageViewer cardViewer = new CardImageViewer(cardImageToGet.card_images);
 
-            HttpClient imageClient = new HttpClient();
+            imageClient = new HttpClient();
             try
             {
                 foreach (CardImage cardImage in cardViewer.CurrentCardImage)
@@ -114,7 +115,7 @@ namespace CardSearchApi
             {
                 cardViewers.Add(new CardImageViewer(card.card_images));
             }
-            HttpClient imageClient = new HttpClient();
+            imageClient = new HttpClient();
             try
             {
                 foreach (CardImageViewer cardImageViewer in cardViewers)
