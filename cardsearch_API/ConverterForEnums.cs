@@ -1,11 +1,11 @@
 
 namespace CardSearchApi
 {
-    public class ConverterForEnums
+    public static class ConverterForEnums
     {
         #region Enums for Search Terms
 
-        public searchTerm ConvertStringToSearchTerm(string? search)
+        public static searchTerm ConvertStringToSearchTerm(string? search)
         {
             searchTerm searchTerm;
 
@@ -65,7 +65,7 @@ namespace CardSearchApi
             return searchTerm;
         }
 
-        public string ConvertingSearchTermToString(searchTerm term)
+        public static string ConvertingSearchTermToString(searchTerm term)
         {
             switch (term)
             {
@@ -94,7 +94,7 @@ namespace CardSearchApi
 
         #region Enum Conversion for Card Attributes
 
-        public CardAttributes ConvertStringToCardAttribute(string attribute)
+        public static CardAttributes ConvertStringToCardAttribute(string attribute)
         {
             switch (attribute.ToLower())
             {
@@ -117,7 +117,7 @@ namespace CardSearchApi
             }
         }
 
-        public string ConvertCardAttributeToString(CardAttributes attributes)
+        public static string ConvertCardAttributeToString(CardAttributes attributes)
         {
             switch (attributes)
             {
@@ -145,7 +145,7 @@ namespace CardSearchApi
 
         #region Enum Conversion for Card Types
 
-        public CardTypes ConvertStringToCardTypes(string types)
+        public static CardTypes ConvertStringToCardTypes(string types)
         {
             switch (types.ToLower())
             {
@@ -214,7 +214,7 @@ namespace CardSearchApi
             }
         }
 
-        public string ConvertCardtypeToString(CardTypes types)
+        public static string ConvertCardtypeToString(CardTypes types)
         {
             switch (types)
             {

@@ -1,4 +1,3 @@
-using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text;
@@ -31,20 +30,17 @@ namespace CardSearchApi
         private searchTerm searchTerms;
         private string sortSearchName = null!;
         private bool hasSortTerm;
-        private readonly ConverterForEnums converterForEnums = new ConverterForEnums();
         private List<Card> cards = new List<Card>();
         private readonly List<string> cardNames = new List<string>();
         #endregion
 
         #region Public Variables
-
         public List<Card> GetCardsFound => cards;
         public List<string> GetNameOfCardsFound => cardNames;
         public string GetUrlParameters => CreateUrlParameters();
         #endregion
         
         #region Constructors
-
         public ConnectionClass(string searchName, searchTerm term)
         {
             hasSortTerm = false;
@@ -68,7 +64,6 @@ namespace CardSearchApi
         #endregion
 
         #region Public Methods
-
         public string ConnectToWebsiteWithJson()
         {
             string resultOfConnection = "";
@@ -161,7 +156,7 @@ namespace CardSearchApi
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.Append(QuestionMark);
 
-            stringBuilder.Append(converterForEnums.ConvertingSearchTermToString(searchTerms));
+            stringBuilder.Append(ConverterForEnums.ConvertingSearchTermToString(searchTerms));
 
             stringBuilder.Append(EqualSign);
             stringBuilder.Append(searchName.Replace(" ","%20"));
