@@ -1,6 +1,8 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 using CardSearchApi;
+using CardSearchApi.BaseCardClasses;
+using CardSearchApi.Debug;
 
 static class Program
 {
@@ -15,6 +17,11 @@ static class Program
         
         do
         {
+            Console.WriteLine("Testing the DebugLog");
+            
+            DebugLog.WriteDebugLog("This is a test of debug system");
+
+            LineBreak();
             Console.WriteLine("Type in the search term your want");
             Console.WriteLine("Please choose one of the following items to use as a search request. If you press enter with nothing or in incorrect item it will be fuzzy search used.");
             WriteSearchEnumsToTheScreen();

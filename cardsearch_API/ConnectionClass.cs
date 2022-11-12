@@ -142,6 +142,7 @@ namespace CardSearchApi
         private string ResultOfConnection(HttpResponseMessage responseMessage)
         {
             Task<CardFromJson> data = responseMessage.Content.ReadFromJsonAsync<CardFromJson>()!;
+
             string resultOfConnection = $"Success: Number of cards found: {data.Result.data.Count}";
             cards = data.Result.data;
             
