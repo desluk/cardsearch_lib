@@ -9,4 +9,10 @@
         <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
     </PropertyGroup>
 
+    <ItemGroup>
+      <Reference Include="DebugLogger">
+        <HintPath>ThirdPartyLibs\DebugLogger.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
 </Project>

@@ -6,4 +6,10 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <Reference Include="DebugLogger">
+        <HintPath>..\ThirdPartyLibs\DebugLogger.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
 </Project>
