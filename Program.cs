@@ -1,8 +1,8 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 using CardSearchApi;
-using CardSearchApi.BaseCardClasses;
 using CardSearchApi.Debug;
+using CardSearchApi.YuGiOhCards;
 
 static class Program
 {
@@ -25,7 +25,7 @@ static class Program
             Console.WriteLine("Type in the search term your want");
             Console.WriteLine("Please choose one of the following items to use as a search request. If you press enter with nothing or in incorrect item it will be fuzzy search used.");
             WriteSearchEnumsToTheScreen();
-            searchTerm searchTerm = ConverterForEnums.ConvertStringToSearchTerm(Console.ReadLine());
+            YuGiOhEnums.SearchTerm searchTerm = YuGiOhEnums.ConvertStringToSearchTerm(Console.ReadLine());
             LineBreak();
             Console.WriteLine("You are using " + searchTerm);
             Console.WriteLine("Type in the card name/search name you are wanting, if you do not enter anything ");
