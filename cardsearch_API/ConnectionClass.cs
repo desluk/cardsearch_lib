@@ -1,6 +1,7 @@
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text;
+using static CardSearchApi.YuGiOhCards.YuGiOhEnums;
 
 namespace CardSearchApi
 {
@@ -30,7 +31,7 @@ namespace CardSearchApi
         private string searchName = null;
         private string sortSearchName = null!;
         private bool hasSortTerm = false;
-        private searchTerm searchTerms = searchTerm.fuzzySearch;
+        private SearchTerm SearchTerms = SearchTerm.FuzzySearch;
         private List<Card> cards = new List<Card>();
         private readonly List<string> cardNames = new List<string>();
         #endregion
@@ -42,19 +43,19 @@ namespace CardSearchApi
         #endregion
         
         #region Constructors
-        public ConnectionClass(string searchName, searchTerm term)
+        public ConnectionClass(string searchName, SearchTerm term)
         {
             hasSortTerm = false;
-            searchTerms = term;
+            SearchTerms = term;
             this.searchName = searchName;
             httpClient = new HttpClient();
         }
         
-        public ConnectionClass(string cardNameToSearch, searchTerm termToSearchCardBy, string sortSearchName,
+        public ConnectionClass(string cardNameToSearch, SearchTerm termToSearchCardBy, string sortSearchName,
             bool sort = false)
         {
             searchName = cardNameToSearch;
-            searchTerms = termToSearchCardBy;
+            SearchTerms = termToSearchCardBy;
             hasSortTerm = sort;
             if (hasSortTerm)
             {
@@ -158,7 +159,7 @@ namespace CardSearchApi
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.Append(QuestionMark);
 
-            stringBuilder.Append(ConverterForEnums.ConvertingSearchTermToString(searchTerms));
+            stringBuilder.Append(ConvertingSearchTermToString(SearchTerms));
 
             stringBuilder.Append(EqualSign);
             stringBuilder.Append(searchName.Replace(" ","%20"));
