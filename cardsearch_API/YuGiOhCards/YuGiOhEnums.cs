@@ -1,63 +1,65 @@
 namespace CardSearchApi.YuGiOhCards;
 
+#region Enums
+public enum CardTypes
+{
+    Aqua,
+    Beast,
+    BeastWarrior,
+    Cyberse,
+    Dinosaur,
+    DivineBeast,
+    Dragon,
+    Fairy,
+    Fiend,
+    Fish,
+    Insect,
+    Machine,
+    Plant,
+    Psychic,
+    Pyro,
+    Reptile,
+    Rock,
+    SeaSerpent,
+    SpellCaster,
+    Thunder,
+    Warrior,
+    WingedBeast,
+    Wyrm,
+    Zombie
+}
+    
+public enum CardAttributes
+{
+    Dark,
+    Divine,
+    Earth,
+    Wind,
+    Fire,
+    Light,
+    Water
+}
+    
+public enum SearchTerm
+{
+    FuzzySearch,
+    NameSearch,
+    TypeSearch,
+    AttributeSearch,
+    CardsetSearch,
+    FormatSearch,
+    StableSearch,
+    ArhcetypeSearch
+}
+#endregion
+
 public static class YuGiOhEnums
 {
-    #region Enums
-    public enum CardTypes
-    {
-        Aqua,
-        Beast,
-        BeastWarrior,
-        Cyberse,
-        Dinosaur,
-        DivineBeast,
-        Dragon,
-        Fairy,
-        Fiend,
-        Fish,
-        Insect,
-        Machine,
-        Plant,
-        Psychic,
-        Pyro,
-        Reptile,
-        Rock,
-        SeaSerpent,
-        SpellCaster,
-        Thunder,
-        Warrior,
-        WingedBeast,
-        Wyrm,
-        Zombie
-    }
-    
-    public enum CardAttributes
-    {
-        Dark,
-        Divine,
-        Earth,
-        Wind,
-        Fire,
-        Light,
-        Water
-    }
-    
-    public enum SearchTerm
-    {
-        FuzzySearch,
-        NameSearch,
-        TypeSearch,
-        AttributeSearch,
-        CardsetSearch,
-        FormatSearch,
-        StableSearch,
-        ArhcetypeSearch
-    }
-    #endregion
+  
     
     #region Enums for Search Terms
 
-        public static SearchTerm ConvertStringToSearchTerm(string? search)
+        public static SearchTerm ConvertStringToSearchTerm(string search)
         {
             SearchTerm searchTerm;
 

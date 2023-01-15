@@ -1,6 +1,7 @@
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text;
+using CardSearchApi.YuGiOhCards;
 using static CardSearchApi.YuGiOhCards.YuGiOhEnums;
 
 namespace CardSearchApi
@@ -63,6 +64,8 @@ namespace CardSearchApi
             }
             httpClient = new HttpClient();
         }
+        
+        
         #endregion
 
         #region Public Methods
