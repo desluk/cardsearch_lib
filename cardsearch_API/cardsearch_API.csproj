@@ -16,4 +16,8 @@
       <ProjectReference Include="..\CardCore\CardCore.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Connections\Interface" />
+    </ItemGroup>
+
 </Project>
