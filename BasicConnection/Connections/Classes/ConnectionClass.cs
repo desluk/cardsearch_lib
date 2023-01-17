@@ -1,7 +1,12 @@
+using System;
+using System.Collections.Generic;
+using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text;
+using System.Text.Json.Nodes;
 using CardSearchApi.YuGiOhCards;
+using CardCore;
 using static CardSearchApi.YuGiOhCards.YuGiOhEnums;
 
 namespace CardSearchApi
@@ -33,12 +38,12 @@ namespace CardSearchApi
         private string sortSearchName = null!;
         private bool hasSortTerm = false;
         private SearchTerm SearchTerms = SearchTerm.FuzzySearch;
-        private List<Card> cards = new List<Card>();
+        private List<CardBase> cards = new List<CardBase>();
         private readonly List<string> cardNames = new List<string>();
         #endregion
 
         #region Public Variables
-        public List<Card> GetCardsFound => cards;
+        public List<CardBase> GetCardsFound => null;
         public List<string> GetNameOfCardsFound => cardNames;
         public string GetUrlParameters => CreateUrlParameters();
         #endregion
@@ -69,9 +74,9 @@ namespace CardSearchApi
         #endregion
 
         #region Public Methods
-        public string ConnectToWebsiteWithJson()
+        public Task<JsonObject>? ConnectToWebsiteWithJson()
         {
-            string resultOfConnection = "";
+            Task<JsonObject> resultOfConnection = null;
             httpClient.BaseAddress = new Uri(Website);
             httpClient.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));
@@ -84,76 +89,67 @@ namespace CardSearchApi
             }
             else
             {
-                resultOfConnection = String.Format("Failed: {0}, ({1})", (int)responseMessage.StatusCode,
-                    responseMessage.ReasonPhrase);
+               
                 httpClient.CancelPendingRequests();
             }
 
             return resultOfConnection;
         }
 
-        public async Task<CardImageViewer> GetCardImages(Card cardImageToGet)
-        {
-            CardImageViewer cardViewer = new CardImageViewer(cardImageToGet.card_images);
-
-            imageClient = new HttpClient();
-            try
-            {
-                foreach (CardImage cardImage in cardViewer.CurrentCardImage)
-                {
-                    cardViewer.SetSmallImage(await imageClient.GetByteArrayAsync(cardImage.image_url_small));
-                    cardViewer.SetLargeImage(await imageClient.GetByteArrayAsync(cardImage.image_url));
-                }
-            }
-            catch (Exception e)
-            {
-                // ignored
-            }
-            return cardViewer;
-        }
-
-        public async Task<List<CardImageViewer>> GetCardImages (List<Card> cardsImagesToGet)
-        {
-            List<CardImageViewer> cardViewers = new List<CardImageViewer>();
-            foreach (Card card in cardsImagesToGet)
-            {
-                cardViewers.Add(new CardImageViewer(card.card_images));
-            }
-            imageClient = new HttpClient();
-            try
-            {
-                foreach (CardImageViewer cardImageViewer in cardViewers)
-                {
-                    foreach (CardImage cardImage in cardImageViewer.CurrentCardImage)
-                    {
-                        cardImageViewer.SetSmallImage(await imageClient.GetByteArrayAsync(cardImage.image_url_small));
-                        cardImageViewer.SetLargeImage(await imageClient.GetByteArrayAsync(cardImage.image_url));
-                    }    
-                }
-                
-            }
-            catch (Exception e)
-            {
-                // ignored
-            }
-            return cardViewers;
-        }
+        // public async Task<CardImageViewer> GetCardImages(Card cardImageToGet)
+        // {
+        //     CardImageViewer cardViewer = new CardImageViewer(cardImageToGet.card_images);
+        //
+        //     imageClient = new HttpClient();
+        //     try
+        //     {
+        //         foreach (CardImage cardImage in cardViewer.CurrentCardImage)
+        //         {
+        //             cardViewer.SetSmallImage(await imageClient.GetByteArrayAsync(cardImage.image_url_small));
+        //             cardViewer.SetLargeImage(await imageClient.GetByteArrayAsync(cardImage.image_url));
+        //         }
+        //     }
+        //     catch (Exception e)
+        //     {
+        //         // ignored
+        //     }
+        //     return cardViewer;
+        // }
+        //
+        // public async Task<List<CardImageViewer>> GetCardImages (List<Card> cardsImagesToGet)
+        // {
+        //     List<CardImageViewer> cardViewers = new List<CardImageViewer>();
+        //     foreach (Card card in cardsImagesToGet)
+        //     {
+        //         cardViewers.Add(new CardImageViewer(card.card_images));
+        //     }
+        //     imageClient = new HttpClient();
+        //     try
+        //     {
+        //         foreach (CardImageViewer cardImageViewer in cardViewers)
+        //         {
+        //             foreach (CardImage cardImage in cardImageViewer.CurrentCardImage)
+        //             {
+        //                 cardImageViewer.SetSmallImage(await imageClient.GetByteArrayAsync(cardImage.image_url_small));
+        //                 cardImageViewer.SetLargeImage(await imageClient.GetByteArrayAsync(cardImage.image_url));
+        //             }    
+        //         }
+        //         
+        //     }
+        //     catch (Exception e)
+        //     {
+        //         // ignored
+        //     }
+        //     return cardViewers;
+        // }
 
         #endregion
 
         #region Private Methods
         
-        private string ResultOfConnection(HttpResponseMessage responseMessage)
+        private  Task<JsonObject> ResultOfConnection(HttpResponseMessage responseMessage)
         {
-            Task<CardFromJson> data = responseMessage.Content.ReadFromJsonAsync<CardFromJson>()!;
-
-            string resultOfConnection = $"Success: Number of cards found: {data.Result.data.Count}";
-            cards = data.Result.data;
-            
-            foreach (Card card in cards)
-                cardNames.Add(card.name);
-            
-            return resultOfConnection;
+           return  responseMessage.Content.ReadFromJsonAsync<JsonObject>()!;
         }
 
 

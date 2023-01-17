@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using System.Text.Json.Nodes;
 using CardCore;
 
@@ -5,16 +7,17 @@ namespace CardSearchApi.YuGiOhCards;
 
 public class YuGiOhCard: CardBase
 {
-    private CardTypes cardType;
     private int cardAttack;
     private int cardDefense;
     private int cardLevel;
     
-    private  CardTypes cardRace;
+    private CardType cardType;
     private CardAttributes cardAttribute;
+    private CardFrameType cardFrameType;
+    private CardRace cardRace;
 
-
-    
+    public int GetAttack() => cardAttack;
+    public int GetDefense() => cardDefense;
     
     public override ICardSet GetACardSet(string setName, string setCode)
     {
@@ -23,6 +26,7 @@ public class YuGiOhCard: CardBase
 
     public override void CreateCardFromJson(JsonObject jsonObject)
     {
-       //TODO Bring through a JSON string or Object and create the card.
+        var test = jsonObject["id"];
+        var ten = jsonObject["name"];
     }
 }

@@ -10,7 +10,7 @@ public abstract class CardBase: ICard
     
     protected List<ICardSet> cardSets = new List<ICardSet>();
     protected List<ICardImage> cardImages = new List<ICardImage>();
-    protected ICardPrice cardPrice = null;
+    protected ICardPrice cardPrice;
 
     public int GetCardId()
     {

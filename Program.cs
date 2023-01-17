@@ -1,5 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
+using System.Text.Json.Nodes;
+using CardCore;
 using CardSearchApi;
 using CardSearchApi.Debug;
 using CardSearchApi.YuGiOhCards;
@@ -35,7 +37,8 @@ static class Program
             ConnectionClass connectionClass = new ConnectionClass(searchName, searchTerm);
             Console.WriteLine("Connection Class Created");
             
-            connectionClass.ConnectToWebsiteWithJson();
+            Task<JsonObject>? test = connectionClass.ConnectToWebsiteWithJson();
+
             Console.WriteLine("If you want to get the card details. Please enter y/yes");
             cont = Console.ReadLine().ToLower() ;
             if (cont != null)
@@ -44,10 +47,10 @@ static class Program
             }
             else
             {
-                foreach (Card card in connectionClass.GetCardsFound)
+                foreach (CardBase card in connectionClass.GetCardsFound)
                 {
                     Console.WriteLine(lineBreak);
-                    Console.WriteLine("Name: " + card.name);
+                    Console.WriteLine("Name: " + card.GetCardName());
                 }
             }
             LineBreak();
@@ -60,12 +63,13 @@ static class Program
             {
                 LineBreak();
                 Console.WriteLine("Get first cards image");
-                Task<CardImageViewer> test = connectionClass.GetCardImages(connectionClass.GetCardsFound[0]);
-                CardImageViewer cardImageViewer = test.Result;
-                LineBreak();
-                Console.WriteLine("Number of items found for large Images: "+cardImageViewer.LargeImage.Count);
-                Console.WriteLine("Number of items found for Small Images: "+cardImageViewer.SmallImage.Count);
-                Console.ReadLine();
+                //TODO Once the system has been updated
+                // Task<ICardImage> test = connectionClass.GetCardImages(connectionClass.GetCardsFound[0]);
+                // ICardImage cardImageViewer = test.Result;
+                // LineBreak();
+                // Console.WriteLine("Number of items found for large Images: "+cardImageViewer.GetLargeImages().Length);
+                // Console.WriteLine("Number of items found for Small Images: "+cardImageViewer.GetSmallImages().Length);
+                // Console.ReadLine();
             }
             
             LineBreak();
@@ -95,15 +99,15 @@ static class Program
     {
         if (FindIfPlacedInYes(cont))
         {
-            foreach (Card card in connectionClass.GetCardsFound)
+            foreach (CardBase card in connectionClass.GetCardsFound)
                 WriteCardDetails(card);
         }
         else
         {
-            foreach (Card card in connectionClass.GetCardsFound)
+            foreach (CardBase card in connectionClass.GetCardsFound)
             {
                 LineBreak();
-                Console.WriteLine("Name: " + card.name);
+                Console.WriteLine("Name: " + card.GetCardName());
             }
         }
     }
@@ -113,14 +117,16 @@ static class Program
         return cont == "y" || cont == "yes" || cont == "y/yes";
     }
 
-    private static void WriteCardDetails(Card card)
+    private static void WriteCardDetails(CardBase card)
     {
+        
         LineBreak();
-        Console.WriteLine("Name: " + card.name);
+        Console.WriteLine("Name: " + card.GetCardName());
         Console.WriteLine();
-        Console.WriteLine("Description: " + card.desc);
+        Console.WriteLine("Description: " + card.GetCardDescription());
         Console.WriteLine();
-        Console.WriteLine("Attack: " + card.atk + " Defence: " + card.def);
+        if(card is YuGiOhCard yu)
+            Console.WriteLine("Attack: " + yu.GetAttack() + " Defence: " + yu.GetDefense());
     }
 
     private static string GetCardNameFromUser()

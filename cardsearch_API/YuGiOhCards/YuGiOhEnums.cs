@@ -1,4 +1,6 @@
+using System;
 using System.Diagnostics;
+using System.Linq;
 
 namespace CardSearchApi.YuGiOhCards;
 
@@ -562,7 +564,7 @@ public static class YuGiOhEnums
 
     #region Card Frames
 
-    public static CardFrameType ConvertStringToCardTypes(string type)
+    public static CardFrameType ConvertStringToCardFrameTypes(string type)
     {
         switch (RemoveWhiteSpace(type))
         {
@@ -605,9 +607,47 @@ public static class YuGiOhEnums
         }
     }
 
-    public static string ConvertCardTypeToString(CardFrameType type)
+    public static string ConvertCardFrameTypeToString(CardFrameType type)
     {
-        
+        switch (type)
+        {
+            case CardFrameType.Normal:
+                return "Normal";
+            case CardFrameType.Effect:
+                return "Effect";
+            case CardFrameType.Ritual:
+                return "Ritual";
+            case CardFrameType.Fusion:
+                return "Fusion";
+            case CardFrameType.Synchro:
+                return "Synchro";
+            case CardFrameType.Xyz:
+                return "Xyz";
+            case CardFrameType.Link:
+                return "Link";
+            case CardFrameType.NormalPendulum:
+                return "Normal Pendulum";
+            case CardFrameType.EffectPendulum:
+                return "Effect Pendulum";
+            case CardFrameType.RitualPendulum:
+                return "Ritual Pendulum";
+            case CardFrameType.FusionPendulum:
+                return "Fusion Pendulum";
+            case CardFrameType.SynchroPendulum:
+                return "Synchro Pendulum";
+            case CardFrameType.XyzPendulum:
+                return "Xyz Pendulum";
+            case CardFrameType.Spell:
+                return "Spell";
+            case CardFrameType.Trap:
+                return "Trap";
+            case CardFrameType.Token:
+                return "Token";
+            case CardFrameType.Skill:
+                return "Skill";
+            default:
+                return "Normal";
+        }
     }
 
     #endregion

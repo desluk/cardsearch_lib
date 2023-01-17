@@ -9,13 +9,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Reference Include="DebugLogger">
-        <HintPath>..\ThirdPartyLibs\DebugLogger.dll</HintPath>
-      </Reference>
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\CardCore\CardCore.csproj" />
+      <ProjectReference Include="..\cardsearch_API\cardsearch_API.csproj" />
     </ItemGroup>
 
 </Project>
