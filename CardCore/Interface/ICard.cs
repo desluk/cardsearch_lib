@@ -1,4 +1,5 @@
 using System.Text.Json.Nodes;
+using Newtonsoft.Json.Linq;
 
 namespace CardCore;
 
@@ -25,6 +26,8 @@ public interface ICard
     public void SetCardPrice(ICardPrice cardPrice);
 #endregion 
     
-    public void CreateCardFromJson(JsonObject jsonObject);
-    
+    public void CreateCardFromJson(JToken jsonObject);
+
+    public void CreateCardFromJsonString(string jsonString);
+
 }

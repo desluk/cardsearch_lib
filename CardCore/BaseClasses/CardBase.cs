@@ -1,4 +1,5 @@
 using System.Text.Json.Nodes;
+using Newtonsoft.Json.Linq;
 
 namespace CardCore;
 
@@ -85,5 +86,7 @@ public abstract class CardBase: ICard
         this.cardPrice = cardPrice;
     }
     
-    public abstract void CreateCardFromJson(JsonObject jsonObject);
+    public abstract void CreateCardFromJson(JToken jsonObject);
+    public abstract void CreateCardFromJsonString(string jsonString);
+
 }

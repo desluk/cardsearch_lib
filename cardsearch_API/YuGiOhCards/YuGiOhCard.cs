@@ -1,7 +1,5 @@
-using System;
-using System.Linq;
-using System.Text.Json.Nodes;
 using CardCore;
+using Newtonsoft.Json.Linq;
 
 namespace CardSearchApi.YuGiOhCards;
 
@@ -24,9 +22,14 @@ public class YuGiOhCard: CardBase
         return cardSets.FirstOrDefault(x => String.CompareOrdinal(x.GetSetCode(), setCode) == 0)!;
     }
 
-    public override void CreateCardFromJson(JsonObject jsonObject)
+    public override void CreateCardFromJson(JToken jsonObject)
     {
-        var test = jsonObject["id"];
-        var ten = jsonObject["name"];
+        var test = (int)(jsonObject["id"] ?? cardId);
+        var ten = (string)(jsonObject["name"]?? cardName)!;
+    }
+
+    public override void CreateCardFromJsonString(string jsonString)
+    {
+        
     }
 }
