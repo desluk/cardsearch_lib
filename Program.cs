@@ -5,6 +5,7 @@ using CardCore;
 using CardSearchApi;
 using CardSearchApi.Debug;
 using CardSearchApi.YuGiOhCards;
+using Newtonsoft.Json.Linq;
 
 
 static class Program
@@ -37,24 +38,21 @@ static class Program
             ConnectionClass connectionClass = new ConnectionClass(searchName, searchTerm);
             Console.WriteLine("Connection Class Created");
             
-            Task<JsonObject>? test = connectionClass.ConnectToWebsiteWithJson();
-
-            Console.WriteLine("If you want to get the card details. Please enter y/yes");
-            cont = Console.ReadLine().ToLower() ;
-            if (cont != null)
-            {
-                DisplayCardInformation(cont, connectionClass);
-            }
-            else
-            {
-                foreach (CardBase card in connectionClass.GetCardsFound)
-                {
-                    Console.WriteLine(lineBreak);
-                    Console.WriteLine("Name: " + card.GetCardName());
-                }
-            }
+           JToken? test = connectionClass.ConnectToWebsiteWithJson();
+           List<CardBase> listOfCards = new List<CardBase>();
+           if (test != null)
+           {
+               JArray check = (JArray)test["data"]!;
+               foreach (JToken jToken in check)
+               {
+                   YuGiOhCard card = new YuGiOhCard();
+                   card.CreateCardFromJson(jToken);
+                   listOfCards.Add(card);
+               }
+           }
+          
             LineBreak();
-            Console.WriteLine("Number of items found with your search: " + connectionClass.GetCardsFound.Count);
+            Console.WriteLine("Number of items found with your search: " + listOfCards.Count);
             
             cont = null;
             Console.WriteLine("If you want the Images for the cards please press y/yes");

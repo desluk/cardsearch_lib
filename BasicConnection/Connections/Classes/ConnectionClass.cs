@@ -5,13 +5,15 @@ using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json.Nodes;
+using BasicConnection.Connections.Interfaces;
 using CardSearchApi.YuGiOhCards;
 using CardCore;
+using Newtonsoft.Json.Linq;
 using static CardSearchApi.YuGiOhCards.YuGiOhEnums;
 
 namespace CardSearchApi
 {
-    public class ConnectionClass
+    public class ConnectionClass: IConnection
     {
         #region Private Consts Variables
 
@@ -74,9 +76,9 @@ namespace CardSearchApi
         #endregion
 
         #region Public Methods
-        public Task<JsonObject>? ConnectToWebsiteWithJson()
+        public JToken? ConnectToWebsiteWithJson()
         {
-            Task<JsonObject> resultOfConnection = null;
+            JToken? resultOfConnection = null;
             httpClient.BaseAddress = new Uri(Website);
             httpClient.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));
@@ -147,9 +149,9 @@ namespace CardSearchApi
 
         #region Private Methods
         
-        private  Task<JsonObject> ResultOfConnection(HttpResponseMessage responseMessage)
+        private  JToken? ResultOfConnection(HttpResponseMessage responseMessage)
         {
-           return  responseMessage.Content.ReadFromJsonAsync<JsonObject>()!;
+           return  JToken.Parse(responseMessage.Content.ReadFromJsonAsync<JsonObject>().Result!.ToJsonString());
         }
 
 
