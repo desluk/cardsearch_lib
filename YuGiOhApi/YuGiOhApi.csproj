@@ -6,6 +6,7 @@
         <Nullable>enable</Nullable>
         <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
         <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
+        <RootNamespace>cardsearch_API</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -15,6 +16,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\BasicConnection\BasicConnection.csproj" />
       <ProjectReference Include="..\CardCore\CardCore.csproj" />
     </ItemGroup>
 

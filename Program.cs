@@ -35,7 +35,7 @@ static class Program
             Console.WriteLine("Type in the card name/search name you are wanting, if you do not enter anything ");
             string searchName = GetCardNameFromUser();
 
-            ConnectionClass connectionClass = new ConnectionClass(searchName, searchTerm);
+            YuGiOhConnection connectionClass = new YuGiOhConnection(searchName, searchTerm);
             Console.WriteLine("Connection Class Created");
             
            JToken? test = connectionClass.ConnectToWebsiteWithJson();
@@ -93,21 +93,21 @@ static class Program
         Console.WriteLine();
     }
 
-    private static void DisplayCardInformation(string cont, ConnectionClass connectionClass)
+    private static void DisplayCardInformation(string cont, YuGiOhConnection connectionClass)
     {
-        if (FindIfPlacedInYes(cont))
-        {
-            foreach (CardBase card in connectionClass.GetCardsFound)
-                WriteCardDetails(card);
-        }
-        else
-        {
-            foreach (CardBase card in connectionClass.GetCardsFound)
-            {
-                LineBreak();
-                Console.WriteLine("Name: " + card.GetCardName());
-            }
-        }
+        // if (FindIfPlacedInYes(cont))
+        // {
+        //     foreach (CardBase card in connectionClass.GetCardsFound)
+        //         WriteCardDetails(card);
+        // }
+        // else
+        // {
+        //     foreach (CardBase card in connectionClass.GetCardsFound)
+        //     {
+        //         LineBreak();
+        //         Console.WriteLine("Name: " + card.GetCardName());
+        //     }
+        // }
     }
 
     private static bool FindIfPlacedInYes(string cont)

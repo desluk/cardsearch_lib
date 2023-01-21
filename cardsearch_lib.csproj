@@ -19,4 +19,26 @@
       <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Update="YuGiOhApi\YuGiOhCards\YuGiOhEnums.cs">
+        <Link>cardsearch_API\YuGiOhCards\YuGiOhEnums.cs</Link>
+      </Compile>
+      <Compile Update="YuGiOhApi\YuGiOhCards\YuGiOhCard.cs">
+        <Link>cardsearch_API\YuGiOhCards\YuGiOhCard.cs</Link>
+      </Compile>
+      <Compile Update="YuGiOhApi\YuGiOhCards\YuGiOhImages.cs">
+        <Link>cardsearch_API\YuGiOhCards\YuGiOhImages.cs</Link>
+      </Compile>
+      <Compile Update="YuGiOhApi\YuGiOhCards\YuGiOhSets.cs">
+        <Link>cardsearch_API\YuGiOhCards\YuGiOhSets.cs</Link>
+      </Compile>
+      <Compile Update="YuGiOhApi\YuGiOhCards\YuGiOhPrice.cs">
+        <Link>cardsearch_API\YuGiOhCards\YuGiOhPrice.cs</Link>
+      </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="CardCore\CardCore.csproj" />
+    </ItemGroup>
+
 </Project>

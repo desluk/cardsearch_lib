@@ -1,19 +1,15 @@
-using System;
-using System.Collections.Generic;
-using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json.Nodes;
-using BasicConnection.Connections.Interfaces;
 using CardSearchApi.YuGiOhCards;
-using CardCore;
 using Newtonsoft.Json.Linq;
+using BasicConnection;
 using static CardSearchApi.YuGiOhCards.YuGiOhEnums;
 
 namespace CardSearchApi
 {
-    public class ConnectionClass: IConnection
+    public class YuGiOhConnection:BaseCardConnection
     {
         #region Private Consts Variables
 
@@ -40,18 +36,16 @@ namespace CardSearchApi
         private string sortSearchName = null!;
         private bool hasSortTerm = false;
         private SearchTerm SearchTerms = SearchTerm.FuzzySearch;
-        private List<CardBase> cards = new List<CardBase>();
         private readonly List<string> cardNames = new List<string>();
         #endregion
 
         #region Public Variables
-        public List<CardBase> GetCardsFound => null;
         public List<string> GetNameOfCardsFound => cardNames;
         public string GetUrlParameters => CreateUrlParameters();
         #endregion
         
         #region Constructors
-        public ConnectionClass(string searchName, SearchTerm term)
+        public YuGiOhConnection(string searchName, SearchTerm term)
         {
             hasSortTerm = false;
             SearchTerms = term;
@@ -59,7 +53,7 @@ namespace CardSearchApi
             httpClient = new HttpClient();
         }
         
-        public ConnectionClass(string cardNameToSearch, SearchTerm termToSearchCardBy, string sortSearchName,
+        public YuGiOhConnection(string cardNameToSearch, SearchTerm termToSearchCardBy, string sortSearchName,
             bool sort = false)
         {
             searchName = cardNameToSearch;
@@ -76,13 +70,13 @@ namespace CardSearchApi
         #endregion
 
         #region Public Methods
-        public JToken? ConnectToWebsiteWithJson()
+        public override JToken ConnectToWebsiteWithJson()
         {
             JToken? resultOfConnection = null;
             httpClient.BaseAddress = new Uri(Website);
             httpClient.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));
-
+            
             HttpResponseMessage responseMessage = httpClient.GetAsync(CreateUrlParameters()).Result;
             if (responseMessage.IsSuccessStatusCode)
             {
@@ -94,8 +88,22 @@ namespace CardSearchApi
                
                 httpClient.CancelPendingRequests();
             }
-
+            
             return resultOfConnection;
+        }
+
+        public override byte[] GetImageFromImageUrl(string imageUrl)
+        {
+            byte[] imageArray = new byte[] { };
+
+            return imageArray;  
+        }
+
+        public override Dictionary<string, byte[]> GetImagesFromListOfUrl(List<string> imageUrls)
+        {
+            Dictionary<string, byte[]> imageArray = new Dictionary<string, byte[]>();
+
+            return imageArray;
         }
 
         // public async Task<CardImageViewer> GetCardImages(Card cardImageToGet)
