@@ -1,6 +1,5 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
-using System.Text.Json.Nodes;
 using CardCore;
 using CardSearchApi;
 using CardSearchApi.Debug;
