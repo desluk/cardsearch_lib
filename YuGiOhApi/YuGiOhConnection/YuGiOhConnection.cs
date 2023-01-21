@@ -12,8 +12,6 @@ namespace CardSearchApi
     public class YuGiOhConnection:BaseCardConnection
     {
         #region Private Consts Variables
-
-        private const string Website = "https://db.ygoprodeck.com/api/v7/cardinfo.php";
         private const string QuestionMark = "?";
         private const string FuzzySearch = "fname";
         private const string DirectNameSearch = "name";
@@ -30,8 +28,6 @@ namespace CardSearchApi
         #endregion
 
         #region Private Variables
-        private static HttpClient httpClient = new HttpClient();
-        private static HttpClient imageClient = new HttpClient();
         private string searchName = null;
         private string sortSearchName = null!;
         private bool hasSortTerm = false;
@@ -51,6 +47,7 @@ namespace CardSearchApi
             SearchTerms = term;
             this.searchName = searchName;
             httpClient = new HttpClient();
+            apiUrl = "https://db.ygoprodeck.com/api/v7/cardinfo.php";
         }
         
         public YuGiOhConnection(string cardNameToSearch, SearchTerm termToSearchCardBy, string sortSearchName,
@@ -64,6 +61,7 @@ namespace CardSearchApi
                 this.sortSearchName = sortSearchName;
             }
             httpClient = new HttpClient();
+            apiUrl = "https://db.ygoprodeck.com/api/v7/cardinfo.php";
         }
         
         
@@ -73,7 +71,7 @@ namespace CardSearchApi
         public override JToken ConnectToWebsiteWithJson()
         {
             JToken? resultOfConnection = null;
-            httpClient.BaseAddress = new Uri(Website);
+            httpClient.BaseAddress = new Uri(apiUrl);
             httpClient.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));
             

@@ -6,8 +6,9 @@ namespace BasicConnection;
 public abstract class BaseCardConnection: ICardConnection
 {
     protected string apiUrl;
-    protected static HttpClient httpClient = new HttpClient();
-    protected static HttpClient imageClient = new HttpClient();
+    
+    protected HttpClient httpClient;
+    protected HttpClient imageClient;
     
     
     public void SetUrl(string url)

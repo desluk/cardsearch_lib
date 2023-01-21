@@ -37,9 +37,12 @@ public class YuGiOhCard: CardBase
         cardRace = YuGiOhEnums.ConvertStringToCardRace((string)jsonObject["race"]!);
         cardAttribute = YuGiOhEnums.ConvertStringToCardAttribute((string)jsonObject["attribute"]!);
         
-        SetupCardSets((JArray)jsonObject["card_sets"]);
-        SetupCardImages((JArray)jsonObject["card_images"]);
-        SetupCardPrices((JArray)jsonObject["card_prices"]);
+        if((JArray)jsonObject["card_sets"]!=null)
+            SetupCardSets((JArray)jsonObject["card_sets"]);
+        if((JArray)jsonObject["card_images"]!=null)
+            SetupCardImages((JArray)jsonObject["card_images"]);
+        if((JArray)jsonObject["card_prices"] != null)
+            SetupCardPrices((JArray)jsonObject["card_prices"]);
     }
 
     private void SetupCardPrices(JArray? jArray)
