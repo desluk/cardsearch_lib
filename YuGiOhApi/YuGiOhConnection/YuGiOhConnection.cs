@@ -5,11 +5,12 @@ using System.Text.Json.Nodes;
 using CardSearchApi.YuGiOhCards;
 using Newtonsoft.Json.Linq;
 using BasicConnection;
+using CardSearchApi.Debug;
 using static CardSearchApi.YuGiOhCards.YuGiOhEnums;
 
 namespace CardSearchApi
 {
-    public class YuGiOhConnection:BaseCardConnection
+    public class YuGiOhConnection: BaseCardConnection
     {
         #region Private Consts Variables
         private const string QuestionMark = "?";
@@ -92,8 +93,19 @@ namespace CardSearchApi
 
         public override byte[] GetImageFromImageUrl(string imageUrl)
         {
-            byte[] imageArray = new byte[] { };
+            byte[] imageArray = null;
 
+            imageClient = new HttpClient();
+            
+            try
+            {
+                imageArray = imageClient.GetByteArrayAsync(imageUrl).Result;
+            }
+            catch (Exception e)
+            {
+                DebugLog.WriteDebugLog("There was an issue loading the card: "+ imageUrl);
+                DebugLog.WriteDebugLog("Issue was: "+e.Message);
+            }
             return imageArray;  
         }
 
@@ -101,55 +113,13 @@ namespace CardSearchApi
         {
             Dictionary<string, byte[]> imageArray = new Dictionary<string, byte[]>();
 
+            foreach (string imageUrl in imageUrls)
+            {
+                imageArray.Add(imageUrl,GetImageFromImageUrl(imageUrl));
+            }
+            
             return imageArray;
         }
-
-        // public async Task<CardImageViewer> GetCardImages(Card cardImageToGet)
-        // {
-        //     CardImageViewer cardViewer = new CardImageViewer(cardImageToGet.card_images);
-        //
-        //     imageClient = new HttpClient();
-        //     try
-        //     {
-        //         foreach (CardImage cardImage in cardViewer.CurrentCardImage)
-        //         {
-        //             cardViewer.SetSmallImage(await imageClient.GetByteArrayAsync(cardImage.image_url_small));
-        //             cardViewer.SetLargeImage(await imageClient.GetByteArrayAsync(cardImage.image_url));
-        //         }
-        //     }
-        //     catch (Exception e)
-        //     {
-        //         // ignored
-        //     }
-        //     return cardViewer;
-        // }
-        //
-        // public async Task<List<CardImageViewer>> GetCardImages (List<Card> cardsImagesToGet)
-        // {
-        //     List<CardImageViewer> cardViewers = new List<CardImageViewer>();
-        //     foreach (Card card in cardsImagesToGet)
-        //     {
-        //         cardViewers.Add(new CardImageViewer(card.card_images));
-        //     }
-        //     imageClient = new HttpClient();
-        //     try
-        //     {
-        //         foreach (CardImageViewer cardImageViewer in cardViewers)
-        //         {
-        //             foreach (CardImage cardImage in cardImageViewer.CurrentCardImage)
-        //             {
-        //                 cardImageViewer.SetSmallImage(await imageClient.GetByteArrayAsync(cardImage.image_url_small));
-        //                 cardImageViewer.SetLargeImage(await imageClient.GetByteArrayAsync(cardImage.image_url));
-        //             }    
-        //         }
-        //         
-        //     }
-        //     catch (Exception e)
-        //     {
-        //         // ignored
-        //     }
-        //     return cardViewers;
-        // }
 
         #endregion
 
