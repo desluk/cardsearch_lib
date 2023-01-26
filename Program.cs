@@ -1,5 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
+using System.Net.Mime;
 using CardCore;
 using CardSearchApi;
 using CardSearchApi.Debug;
@@ -52,6 +53,9 @@ static class Program
           
             LineBreak();
             Console.WriteLine("Number of items found with your search: " + listOfCards.Count);
+            Console.WriteLine("Do you want to see the card details? Press y/yes");
+            cont = Console.ReadLine();
+            DisplayCardInformation(cont,listOfCards);
             
             cont = null;
             Console.WriteLine("If you want the Images for the cards please press y/yes");
@@ -60,13 +64,21 @@ static class Program
             {
                 LineBreak();
                 Console.WriteLine("Get first cards image");
-                //TODO Once the system has been updated
-                // Task<ICardImage> test = connectionClass.GetCardImages(connectionClass.GetCardsFound[0]);
-                // ICardImage cardImageViewer = test.Result;
-                // LineBreak();
-                // Console.WriteLine("Number of items found for large Images: "+cardImageViewer.GetLargeImages().Length);
-                // Console.WriteLine("Number of items found for Small Images: "+cardImageViewer.GetSmallImages().Length);
-                // Console.ReadLine();
+                List<byte[]> allTheImages = new List<byte[]>();
+
+                foreach (CardBase listOfCard in listOfCards)
+                {
+                    if(allTheImages.Count == 10)
+                        break;
+                    
+                    foreach (ICardImage cardImage in listOfCard.GetAllImages())
+                    {
+                        if(cardImage!= null && cardImage.GetLargeImageUrl() != "")
+                            allTheImages.Add(connectionClass.GetImageFromImageUrl(cardImage.GetLargeImageUrl()));
+                    }
+                }
+
+                WriteImagesToFile(allTheImages);
             }
             
             LineBreak();
@@ -86,27 +98,45 @@ static class Program
         Console.ReadLine();
     }
 
+    private static void WriteImagesToFile(List<byte[]> allTheImages)
+    {
+        int number = 0;
+        foreach (byte[] image in allTheImages)
+        {
+            using (MemoryStream ms = new MemoryStream(image))
+            {
+                using (FileStream fs = new FileStream("/home/luke/Documents/Cards_"+number, FileMode.Create))
+                {
+                    ms.WriteTo(fs);
+                    Console.WriteLine("Card has been written to the following location: "+"/home/luke/Documents/Cards_"+number);
+                }
+            }
+
+            number++;
+        }
+    }
+
     private static void LineBreak()
     {
         Console.WriteLine(lineBreak);
         Console.WriteLine();
     }
 
-    private static void DisplayCardInformation(string cont, YuGiOhConnection connectionClass)
+    private static void DisplayCardInformation(string cont, List<CardBase> cards)
     {
-        // if (FindIfPlacedInYes(cont))
-        // {
-        //     foreach (CardBase card in connectionClass.GetCardsFound)
-        //         WriteCardDetails(card);
-        // }
-        // else
-        // {
-        //     foreach (CardBase card in connectionClass.GetCardsFound)
-        //     {
-        //         LineBreak();
-        //         Console.WriteLine("Name: " + card.GetCardName());
-        //     }
-        // }
+        if (FindIfPlacedInYes(cont))
+        {
+            foreach (CardBase card in cards)
+                WriteCardDetails(card);
+        }
+        else
+        {
+            foreach (CardBase card in cards)
+            {
+                LineBreak();
+                Console.WriteLine("Name: " + card.GetCardName());
+            }
+        }
     }
 
     private static bool FindIfPlacedInYes(string cont)
