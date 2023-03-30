@@ -4,21 +4,21 @@ using Newtonsoft.Json.Linq;
 
 namespace CardSearchApi.YuGiOhCards;
 
-public class YuGiOhCard: CardBase
+public class YuGiOhCard : CardBase
 {
     private int cardAttack;
     private int cardDefense;
     private int cardLevel;
-    
+
     private CardType cardType;
     private CardAttributes cardAttribute;
     private CardFrameType cardFrameType;
     private CardRace cardRace;
 
-    
+
     public int GetAttack() => cardAttack;
     public int GetDefense() => cardDefense;
-    
+
     public override ICardSet GetACardSet(string setName, string setCode)
     {
         return cardSets.FirstOrDefault(x => String.CompareOrdinal(x.GetSetCode(), setCode) == 0)!;
@@ -27,7 +27,7 @@ public class YuGiOhCard: CardBase
     public override void CreateCardFromJson(JToken jsonObject)
     {
         cardId = (int)(jsonObject["id"] ?? cardId);
-        cardName = (string)(jsonObject["name"]?? cardName)!;
+        cardName = (string)(jsonObject["name"] ?? cardName)!;
         cardType = YuGiOhEnums.ConvertStringToCardTypes((string)jsonObject["type"]!);
         cardFrameType = YuGiOhEnums.ConvertStringToCardFrameTypes((string)jsonObject["frameType"]!);
         cardDescription = (string)jsonObject["desc"]!;
@@ -36,12 +36,12 @@ public class YuGiOhCard: CardBase
         cardLevel = (int)jsonObject["level"]!;
         cardRace = YuGiOhEnums.ConvertStringToCardRace((string)jsonObject["race"]!);
         cardAttribute = YuGiOhEnums.ConvertStringToCardAttribute((string)jsonObject["attribute"]!);
-        
-        if((JArray)jsonObject["card_sets"]!=null)
+
+        if ((JArray)jsonObject["card_sets"] != null)
             SetupCardSets((JArray)jsonObject["card_sets"]);
-        if((JArray)jsonObject["card_images"]!=null)
+        if ((JArray)jsonObject["card_images"] != null)
             SetupCardImages((JArray)jsonObject["card_images"]);
-        if((JArray)jsonObject["card_prices"] != null)
+        if ((JArray)jsonObject["card_prices"] != null)
             SetupCardPrices((JArray)jsonObject["card_prices"]);
     }
 
@@ -94,7 +94,38 @@ public class YuGiOhCard: CardBase
         JToken jsonToken = JToken.Parse(jsonString);
         if (jsonToken != null)
         {
-            //TODO
+            JArray check = (JArray)jsonToken["data"]!;
+            CreateCardFromJson(check[0]);
         }
+    }
+
+    /// <summary>
+    /// This Method will create a General Folder Called YugiOhCards, this will then contain a folder for each card.
+    /// The images if chosen to will also be stored within the folder as well.
+    ///
+    /// You can choose either a Linux or Windows pathing.
+    /// </summary>
+    /// <param name="locationPathIfWindows">This will be the path that will be stored in (not inlcuding the YugiohCards folder)</param>
+    /// <param name="isUsingLinux">If you are using a Linux or Windows based system</param>
+    public override void CreateAJsonFileAndImageFolderForCard(bool isUsingLinux = true,
+        string locationPathIfWindows = "")
+    {
+        string folderPath = GetFolderPath(isUsingLinux, locationPathIfWindows);
+        
+
+    }
+
+    private string GetFolderPath(bool isUsingLinux, string locationPath)
+    {
+        if (isUsingLinux)
+        {
+            string userName = Environment.UserName;
+            return "/home/" + userName + "/Documents/";
+        }
+        else
+        {
+            return locationPath;
+        }
+
     }
 }

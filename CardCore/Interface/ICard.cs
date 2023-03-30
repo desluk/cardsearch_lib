@@ -1,4 +1,3 @@
-using System.Text.Json.Nodes;
 using Newtonsoft.Json.Linq;
 
 namespace CardCore;
@@ -6,9 +5,7 @@ namespace CardCore;
 public interface ICard
 {
 #region Get Methods
-    public int GetCardId();
-    public string GetCardName();
-    public string GetCardDescription();
+public string GetCardDescription();
     public List<ICardImage> GetAllImages();
     public ICardImage GetAnImage(string url);
     public ICardSet GetACardSet(int index);    
@@ -18,8 +15,7 @@ public interface ICard
 #endregion
 
 #region Set Methods
-    public void SetCardName(string cardName);
-    public void SetCardDescription(string cardDescription);
+public void SetCardDescription(string cardDescription);
 
     public void AddAndUpdateCardImage(ICardImage cardImage);
     public void AddAndUpdateCardSet(ICardSet cardSet);

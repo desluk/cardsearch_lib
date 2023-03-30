@@ -1,6 +1,5 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
-using System.Net.Mime;
 using CardCore;
 using CardSearchApi;
 using CardSearchApi.Debug;
@@ -134,7 +133,7 @@ static class Program
             foreach (CardBase card in cards)
             {
                 LineBreak();
-                Console.WriteLine("Name: " + card.GetCardName());
+                Console.WriteLine("Name: " + card.cardName);
             }
         }
     }
@@ -148,7 +147,7 @@ static class Program
     {
         
         LineBreak();
-        Console.WriteLine("Name: " + card.GetCardName());
+        Console.WriteLine("Name: " + card.cardName);
         Console.WriteLine();
         Console.WriteLine("Description: " + card.GetCardDescription());
         Console.WriteLine();

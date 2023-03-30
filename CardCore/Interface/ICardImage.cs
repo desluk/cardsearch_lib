@@ -11,6 +11,6 @@ public interface ICardImage
     public void SetSmallImageUrl(string smallImageUrl);
     public void SetLargeImageUrl(string largeImageUrl);
     public void SetImageId(int imageId);
-
+    
     public Boolean GetImagesFromUrls();
 }

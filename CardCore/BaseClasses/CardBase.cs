@@ -1,12 +1,14 @@
+using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json.Linq;
 
 namespace CardCore;
 
 public abstract class CardBase: ICard
 {
-    protected string cardName;
+    [Required]
+    public string cardName { get; set; }
     protected string cardDescription;
-    protected int cardId;
+    public int cardId { get; set; }
     
     protected List<ICardSet> cardSets = new List<ICardSet>();
     protected List<ICardImage> cardImages = new List<ICardImage>();
@@ -15,11 +17,6 @@ public abstract class CardBase: ICard
     public int GetCardId()
     {
         return cardId;
-    }
-    
-    public string GetCardName()
-    {
-        return cardName;
     }
 
     public string GetCardDescription()
@@ -53,12 +50,7 @@ public abstract class CardBase: ICard
     {
         return cardPrice;
     }
-
-    public void SetCardName(string cardName)
-    {
-        this.cardName = cardName;
-    }
-
+    
     public void SetCardDescription(string cardDescription)
     {
         this.cardDescription = cardDescription;
@@ -88,4 +80,5 @@ public abstract class CardBase: ICard
     public abstract void CreateCardFromJson(JToken jsonObject);
     public abstract void CreateCardFromJsonString(string jsonString);
 
+    public abstract void CreateAJsonFileAndImageFolderForCard(bool isUsingLinux = true,string locationPathIfWindows = "");
 }
