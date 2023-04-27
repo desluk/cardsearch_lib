@@ -36,7 +36,7 @@ public abstract class BaseDeck : IDeck
         return mainDeck;
     }
 
-    public CardBase GetCardFromMainDeck(string cardName)
+    public virtual CardBase GetCardFromMainDeck(string cardName)
     {
         foreach (KeyValuePair<CardBase, int> pair in mainDeck)
         {
@@ -51,7 +51,7 @@ public abstract class BaseDeck : IDeck
 
     public abstract void SetMainDeck(JToken jsonObject);
 
-    public void AddCardToMainDeck(CardBase cardToAdd)
+    public virtual void AddCardToMainDeck(CardBase cardToAdd)
     {
         foreach (KeyValuePair<CardBase, int> pair in mainDeck)
         {
@@ -68,12 +68,12 @@ public abstract class BaseDeck : IDeck
         mainDeck.Add(cardToAdd, 1);
     }
 
-    public void RemoveCardFromMainDeck(CardBase cardToRemove)
+    public virtual void RemoveCardFromMainDeck(CardBase cardToRemove)
     {
        RemoveCardFromMainDeck(cardToRemove.cardName);
     }
 
-    public void RemoveCardFromMainDeck(string cardName)
+    public virtual void RemoveCardFromMainDeck(string cardName)
     {
         CardBase tempCard = null;
         foreach (KeyValuePair<CardBase, int> pair in mainDeck)
