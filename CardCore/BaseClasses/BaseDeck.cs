@@ -4,17 +4,36 @@ namespace CardCore;
 
 public abstract class BaseDeck : IDeck
 {
-    public string deckName { get; set; }
-    public string deckDescription { get; set; }
+    public string DeckName { get; set; }
+    public string DeckDescription { get; set; }
 
     private Dictionary<CardBase, int> mainDeck = new Dictionary<CardBase, int>();
     private int maxNumberOfCardDuplicates;
 
+    protected BaseDeck(int maxNumberOfCardDuplicates, string deckName, string deckDescription)
+    {
+        this.maxNumberOfCardDuplicates = maxNumberOfCardDuplicates;
+        DeckName = deckName;
+        DeckDescription = deckDescription;
+        maxNumberOfCardDuplicates = 3;
+    }
+
+    protected BaseDeck(int maxNumberOfCardDuplicates, string deckName)
+    {
+        this.maxNumberOfCardDuplicates = maxNumberOfCardDuplicates;
+        DeckName = deckName;
+        DeckDescription = string.Empty;
+        maxNumberOfCardDuplicates = 3;
+    }
+    
     protected BaseDeck(int maxNumberOfCardDuplicates)
     {
         this.maxNumberOfCardDuplicates = maxNumberOfCardDuplicates;
+        DeckName = String.Empty;
+        DeckDescription = String.Empty;
+        maxNumberOfCardDuplicates = 3;
     }
-
+    
     public Dictionary<CardBase, int> GetMainDeck()
     {
         return mainDeck;

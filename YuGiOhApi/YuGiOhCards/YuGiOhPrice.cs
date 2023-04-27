@@ -4,11 +4,11 @@ namespace CardSearchApi.YuGiOhCards;
 
 public class YuGiOhPrice:ICardPrice
 {
-    private string marketPrice;
-    private string tcgPlayerPrice;
-    private string eBayPrice;
-    private string amazonPrice;
-    private string coolPrice;
+    private string marketPrice = String.Empty;
+    private string tcgPlayerPrice = String.Empty;
+    private string eBayPrice = String.Empty;
+    private string amazonPrice = String.Empty;
+    private string coolPrice = String.Empty;
     
     public void SetMarketPrice(string marketPrice)
     {
