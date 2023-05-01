@@ -8,6 +8,8 @@ public abstract class BaseDeck : IDeck
     public string DeckDescription { get; set; }
 
     protected Dictionary<CardBase, int> mainDeck = new Dictionary<CardBase, int>();
+    protected CardBase[] cardBosses;
+    private int numberOfCardBosses = 0;
     protected int maxNumberOfCardDuplicates;
 
     protected BaseDeck(int maxNumberOfCardDuplicates, string deckName, string deckDescription)
@@ -15,6 +17,7 @@ public abstract class BaseDeck : IDeck
         this.maxNumberOfCardDuplicates = maxNumberOfCardDuplicates;
         DeckName = deckName;
         DeckDescription = deckDescription;
+        cardBosses = new CardBase[3];
     }
 
     protected BaseDeck(int maxNumberOfCardDuplicates, string deckName)
@@ -22,6 +25,7 @@ public abstract class BaseDeck : IDeck
         this.maxNumberOfCardDuplicates = maxNumberOfCardDuplicates;
         DeckName = deckName;
         DeckDescription = string.Empty;
+        cardBosses = new CardBase[3];
     }
     
     protected BaseDeck(int maxNumberOfCardDuplicates)
@@ -29,11 +33,17 @@ public abstract class BaseDeck : IDeck
         this.maxNumberOfCardDuplicates = maxNumberOfCardDuplicates;
         DeckName = String.Empty;
         DeckDescription = String.Empty;
+        cardBosses = new CardBase[3];
     }
     
     public Dictionary<CardBase, int> GetMainDeck()
     {
         return mainDeck;
+    }
+
+    public virtual CardBase[] GetBossCards()
+    {
+        return cardBosses;
     }
 
     public virtual CardBase GetCardFromMainDeck(string cardName)
@@ -50,6 +60,17 @@ public abstract class BaseDeck : IDeck
     }
 
     public abstract void SetMainDeck(JToken jsonObject);
+    public virtual bool AddCardToCardBoss(CardBase newBossCard)
+    {
+        if (numberOfCardBosses >= 3)
+            return false;
+        else
+        {
+            cardBosses[numberOfCardBosses] = newBossCard;
+            numberOfCardBosses++;
+            return true;
+        }
+    }
 
     public virtual void AddCardToMainDeck(CardBase cardToAdd)
     {
@@ -66,6 +87,15 @@ public abstract class BaseDeck : IDeck
         }
 
         mainDeck.Add(cardToAdd, 1);
+    }
+
+    public virtual void RemoveCardFromCardBoss(CardBase removeThisCard)
+    {
+        if (cardBosses.Contains(removeThisCard))
+        {
+            cardBosses = cardBosses.Where(elem => elem != removeThisCard).ToArray();
+            numberOfCardBosses--;  
+        }
     }
 
     public virtual void RemoveCardFromMainDeck(CardBase cardToRemove)

@@ -7,7 +7,8 @@ public interface IDeck
     #region Get Methods
 
     public Dictionary<CardBase,int> GetMainDeck();
-    
+
+    public CardBase[] GetBossCards();
 
     public CardBase GetCardFromMainDeck(string cardName);
 
@@ -17,7 +18,11 @@ public interface IDeck
 
     public void SetMainDeck(JToken jsonObject);
 
+    public bool AddCardToCardBoss(CardBase newBossCard);
+
     public void AddCardToMainDeck(CardBase cardToAdd);
+
+    public void RemoveCardFromCardBoss(CardBase removeThisCard);
 
     public void RemoveCardFromMainDeck(CardBase cardToRemove);
 
